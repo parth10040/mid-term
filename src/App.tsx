@@ -6,6 +6,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        {/*
+          here we will demonstrate how jest-axe works.
+          delete alt="logo" in the img below and run tests.
+        */}
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
