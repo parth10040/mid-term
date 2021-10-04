@@ -91,3 +91,16 @@ Run tests with:
 ```bash
 npm run test
 ```
+
+### Using docker compose
+These commands are to be ran in the docker compose directory.
+
+#### Build the Image
+```bash
+docker compose build
+```
+
+#### Run the image
+```bash
+docker compose up -d
+```
