@@ -1,28 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import JokeController from './jokeController';
+import Modal from './modal';
+import "./index.css"
+import { useState } from 'react';
+import JokeDisplay from './jokeDisplay';
 
 function App() {
+  const [welcome, setWelcome] = useState(false);
+
+  function start() {
+    setWelcome(!welcome)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        {/*
-          here we will demonstrate how jest-axe works.
-          delete alt="logo" in the img below and run tests.
-        */}
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        welcome ?
+          <div className="jokeControl">
+            <JokeController />
+            <JokeDisplay />
+          </div>
+          :
+          <Modal showBackButton={false} >
+            <div className="modal__welcome">
+              <h1 className="child">Welcome!</h1>
+              <button className="button child" onClick={start}>
+                Start!
+              </button>
+            </div>
+          </Modal>
+      }
     </div>
   );
 }
