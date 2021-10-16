@@ -11,9 +11,10 @@ import JokeApi from '../JokeApi'
 
   app.use('getjokes', (_, res) => {
     return res.json(jokeBank.getJokes());
+
   });
 
   app.listen(8000, () => {
-    console.log(`express server started on 5000`);
+    console.log(`express server started on 8000`);
   })
 })().catch(err => console.log(err));
