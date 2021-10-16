@@ -18,4 +18,5 @@ RUN \
 USER appuser
 
 EXPOSE 8000
-CMD ["node", "dist/server.js"]
+
+CMD ["node", "dist/src/server.js"]
