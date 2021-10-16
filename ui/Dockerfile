@@ -18,4 +18,4 @@ RUN \
 USER dockeruser
 
 EXPOSE 3001
-CMD ["npx", "serve", "build"]
+CMD ["npx", "serve", "-l", "3001", "build"]
