@@ -1,17 +1,18 @@
+import cors from 'cors';
 import express from 'express';
 import JokeApi from '../JokeApi'
 
 (async () => {
   const app = express();
+  app.use(cors());
+
   const jokeBank = new JokeApi();
+  app.get('jokes', (_, res) => {
+    return res.json(jokeBank.getJokes());
+  });
 
   app.use('/', (_, res) => {
     res.json('hello world');
-  });
-
-  app.use('getjokes', (_, res) => {
-    return res.json(jokeBank.getJokes());
-
   });
 
   app.listen(8000, () => {
