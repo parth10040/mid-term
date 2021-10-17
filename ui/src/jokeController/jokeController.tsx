@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import Modal from '../modal'
 import "../index.css"
 import "./jokeController.css"
@@ -6,7 +6,8 @@ import axios from 'axios';
 
 const baseURL = 'http://backend.127-0-0-1.sslip.io';
 
-export default function JokeController() {
+export default function JokeController(props: { jokeUpdate: Dispatch<SetStateAction<string[]>> }) {
+  const { jokeUpdate } = props;
   const [jokeInput, setJokeInput] = useState<JokeInput>({
     post: {
       content: "",
@@ -71,9 +72,16 @@ export default function JokeController() {
   async function getJokes(event: FormEvent) {
     event.preventDefault();
 
-    const jokesList = await axios.get(`${baseURL}/jokes`);
+    const array: string[] = [];
+    const jokesList: Jokes = (await axios.get(`${baseURL}/jokes`)).data;
+    console.info(jokesList);
+    Object.values(jokesList).forEach((joke: Joke) => {
+      if (joke.content && !joke.isDeleted) {
+        array.push(joke.content);
+      }
+    });
 
-    console.log(jokesList);
+    jokeUpdate(array);
   }
 
   async function addJoke(event: FormEvent) {
@@ -86,6 +94,13 @@ export default function JokeController() {
     } else {
       // todo: failure message
     }
+
+    setJokeInput({
+      ...jokeInput,
+      post: {
+        content: '',
+      }
+    });
   }
 
   async function editJoke(event: FormEvent) {
@@ -98,6 +113,14 @@ export default function JokeController() {
     } else {
       // todo: failure message
     }
+
+    setJokeInput({
+      ...jokeInput,
+      put: {
+        uuid: '',
+        content: '',
+      }
+    });
   }
 
   async function deleteJoke(event: FormEvent) {
@@ -110,6 +133,13 @@ export default function JokeController() {
     } else {
       // todo: failure message
     }
+
+    setJokeInput({
+      ...jokeInput,
+      delete: {
+        uuid: '',
+      }
+    });
   }
 
   return (
@@ -194,4 +224,12 @@ interface JokeInput {
   delete: {
     uuid: string;
   }
+}
+
+interface Joke {
+  isDeleted: boolean;
+  content: string;
+}
+interface Jokes {
+  [index: string]: Joke
 }
