@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import Modal from '../modal'
 import "../index.css"
 import "./jokeController.css"
@@ -7,6 +7,67 @@ import axios from 'axios';
 const baseURL = 'http://backend.127-0-0-1.sslip.io';
 
 export default function JokeController() {
+  const [jokeInput, setJokeInput] = useState<JokeInput>({
+    post: {
+      content: "",
+    },
+    put: {
+      uuid: "",
+      content: "",
+    },
+    delete: {
+      uuid: "",
+    }
+  });
+
+  function setFormField(changeEvent: ChangeEvent<HTMLInputElement>) {
+    const { target } = changeEvent;
+
+    switch (target.name) {
+      case 'addContent': {
+        setJokeInput({
+          ...jokeInput,
+          post: {
+            content:  target.value,
+          }
+        });
+        break;
+      }
+      case 'putUuid': {
+        setJokeInput({
+          ...jokeInput,
+          put: {
+            ...jokeInput.put,
+            uuid: target.value,
+          }
+        });
+        break;
+      }
+      case 'putContent': {
+        setJokeInput({
+          ...jokeInput,
+          put: {
+            ...jokeInput.put,
+            content: target.value,
+          }
+        });
+        break;
+      }
+      case 'deleteUuid': {
+        setJokeInput({
+          ...jokeInput,
+          delete: {
+            uuid: target.value,
+          }
+        });
+        break;
+      }
+      default: {
+        console.error('impossible case');
+      }
+    }
+  }
+
   async function getJokes(event: FormEvent) {
     event.preventDefault();
 
@@ -15,16 +76,40 @@ export default function JokeController() {
     console.log(jokesList);
   }
 
-  function addJoke(event: FormEvent) {
+  async function addJoke(event: FormEvent) {
     event.preventDefault();
+
+    const res = await axios.post(`${baseURL}/jokes`, jokeInput.post);
+
+    if (res.status === 200) {
+      // todo: show success message
+    } else {
+      // todo: failure message
+    }
   }
 
-  function editJoke(event: FormEvent) {
+  async function editJoke(event: FormEvent) {
     event.preventDefault();
+
+    const res = await axios.put(`${baseURL}/jokes`, jokeInput.put);
+
+    if (res.status === 200) {
+      // todo: show success message
+    } else {
+      // todo: failure message
+    }
   }
 
-  function deleteJoke(event: FormEvent) {
+  async function deleteJoke(event: FormEvent) {
     event.preventDefault();
+
+    const res = await axios.delete(`${baseURL}/jokes`, { data: jokeInput.delete });
+
+    if (res.status === 200) {
+      // todo: show success message
+    } else {
+      // todo: failure message
+    }
   }
 
   return (
@@ -43,7 +128,13 @@ export default function JokeController() {
           <ul className="form-list">
             <li className="form-list__row">
               <label>Add Joke</label>
-              <input type="text" name="cc_number" placeholder="your joke here" />
+              <input
+                type="text"
+                name="addContent"
+                placeholder="your joke here"
+                value={jokeInput.post.content}
+                onChange={setFormField}
+              />
               <button className="button">Add Jokes</button>
             </li>
           </ul>
@@ -53,8 +144,20 @@ export default function JokeController() {
             <li className="form-list__row">
               <label>Edit Joke</label>
               <div className="edit-field">
-                <input type="text" name="cc_number" placeholder="uuid" />
-                <input type="text" name="cc_number" placeholder="joke" />
+                <input
+                  type="text"
+                  name="putUuid"
+                  placeholder="uuid"
+                  value={jokeInput.put.uuid}
+                  onChange={setFormField}
+                />
+                <input
+                  type="text"
+                  name="putContent"
+                  placeholder="joke"
+                  value={jokeInput.put.content}
+                  onChange={setFormField}
+                />
               </div>
               <button className="button">Edit Jokes</button>
             </li>
@@ -64,7 +167,13 @@ export default function JokeController() {
           <ul className="form-list">
             <li className="form-list__row">
               <label>Delete Jokes</label>
-              <input type="text" name="cc_number" placeholder="uuid" />
+              <input
+                type="text"
+                name="deleteUuid"
+                placeholder="uuid"
+                value={jokeInput.delete.uuid}
+                onChange={setFormField}
+              />
               <button className="button">delete Jokes</button>
             </li>
           </ul>
@@ -72,4 +181,17 @@ export default function JokeController() {
       </>
     </Modal >
   )
+}
+
+interface JokeInput {
+  post: {
+    content: string;
+  },
+  put: {
+    uuid: string;
+    content: string;
+  },
+  delete: {
+    uuid: string;
+  }
 }
