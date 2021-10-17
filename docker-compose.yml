@@ -1,15 +1,33 @@
 version: "3.7"
 
 services:
+  reverse-proxy:
+    image: nginx:stable-alpine
+    volumes:
+      - ./config/nginx/:/etc/nginx/conf.d/
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+      - app
+    networks:
+      web-services:
+        aliases:
+          - backend.${BACKEND_DOMAIN:-127-0-0-1.sslip.io}
+
   app:
     build: ui
     user: dockeruser
     restart: always
-    ports:
-      - "3001:3001"
     depends_on:
-      - backend1
-  backend1:
+      - backend
+    networks:
+      - web-services
+
+  backend:
     build: backend
-    ports:
-      - "8000:8000"
+    networks:
+      - web-services
+
+networks:
+  web-services:
