@@ -2,12 +2,17 @@ import { FormEvent } from 'react';
 import Modal from '../modal'
 import "../index.css"
 import "./jokeController.css"
+import axios from 'axios';
+
+const baseURL = 'http://backend.127-0-0-1.sslip.io';
 
 export default function JokeController() {
-  function submit(event: FormEvent) {
+  async function getJokes(event: FormEvent) {
     event.preventDefault();
-    console.log('llama')
-    // getjokes
+
+    const jokesList = await axios.get(`${baseURL}/jokes`);
+
+    console.log(jokesList);
   }
 
   function addJoke(event: FormEvent) {
@@ -26,7 +31,7 @@ export default function JokeController() {
     <Modal showBackButton={true} >
       <>
         <h2>Joke API</h2>
-        <form onSubmit={submit} >
+        <form onSubmit={getJokes} >
           <ul className="form-list">
             <li className="form-list__row">
               <label>Get Jokes</label>
