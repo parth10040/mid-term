@@ -8,20 +8,14 @@ export default function JokeDisplay(props: JokeDisplayProps) {
     <div className="modal">
       <div className="modal__content modal__container displayOuter">
         <h2>Joke List</h2>
-        {
-          jokes ? <></> : "No Jokes Here"
-        }
-
+        <ol>
+          {jokes.map((joke: string, i: number) => { return (<li key={i}>{joke}</li>) })}
+        </ol>
       </div>
     </div>
   )
 }
 
 interface JokeDisplayProps {
-  jokes?: {
-    [index: string]: {
-      isDeleted: boolean;
-      content: string;
-    }
-  },
+  jokes: string[],
 }
