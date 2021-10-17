@@ -6,6 +6,7 @@ import JokeDisplay from './jokeDisplay';
 
 function App() {
   const [welcome, setWelcome] = useState(false);
+  const [jokeBank, setJokeBank] = useState(Array<string>());
 
   function start() {
     setWelcome(!welcome)
@@ -16,8 +17,8 @@ function App() {
       {
         welcome ?
           <div className="jokeControl">
-            <JokeController />
-            <JokeDisplay />
+              <JokeController jokeUpdate={setJokeBank} />
+              <JokeDisplay jokes={jokeBank} />
           </div>
           :
           <Modal showBackButton={false} >
