@@ -15,19 +15,5 @@ services:
         aliases:
           - backend.${BACKEND_DOMAIN:-127-0-0-1.sslip.io}
 
-  app:
-    build: ui
-    user: dockeruser
-    restart: always
-    depends_on:
-      - backend
-    networks:
-      - web-services
-
-  backend:
-    build: backend
-    networks:
-      - web-services
-
 networks:
   web-services:
