@@ -1,0 +1,42 @@
+image: node:lts-alpine
+
+stages:
+  - pre-flight
+  - build
+  - checks
+  - test
+
+pre-flight:
+  stage: pre-flight
+  script:
+    - npm audit
+  allow_failure: true
+
+build:
+  stage: build
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    when: on_success
+    expire_in: 2 days
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - npm run build
+
+eslint:
+  stage: checks
+  script:
+    - npm run lint
+
+audit:
+  stage: checks
+  script:
+    - npm run audit
+
+test:
+  stage: test
+  script:
+    - npm run test
