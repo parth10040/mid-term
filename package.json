@@ -24,6 +24,7 @@
     "start": "react-scripts start",
     "audit": "npm audit --production",
     "build": "react-scripts build",
+    "lint": "eslint",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
