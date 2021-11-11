@@ -9,11 +9,14 @@ services:
       - 80:80
     depends_on:
       - backend
-      - app
     networks:
       web-services:
         aliases:
           - backend.${BACKEND_DOMAIN:-127-0-0-1.sslip.io}
+  backend:
+    build: backend
+    networks:
+      - web-services
 
 networks:
   web-services:
