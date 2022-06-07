@@ -17,7 +17,6 @@ services:
 
   app:
     build: ui
-    user: dockeruser
     restart: always
     depends_on:
       - backend
