@@ -16,20 +16,20 @@ import JokeApi from '../JokeApi'
     const { body } = req;
 
     jokeBank.postJoke(body.content);
-    return res.json('success');
+    return res.json('200OK');
   });
 
   app.put('/jokes', (req, res) => {
     const { body: { uuid, content } } = req;
 
     jokeBank.updateJoke(uuid, content);
-    return res.json('success');
+    return res.json('200OK');
   });
 
   app.delete('/jokes', (req, res) => {
     jokeBank.deleteJoke(req.body.uuid);
 
-    return res.json('success');
+    return res.json('200OK');
   });
 
   app.use('/', (_, res) => {

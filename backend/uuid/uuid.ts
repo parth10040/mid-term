@@ -7,7 +7,7 @@ export default function v4() {
 	const idIndex = getRandomized(idArray.length);
 	const charactersLength = idArray[idIndex].length;
 
-	for ( let i = 0; i < 3 ; i++ ) {
+	for ( let i = 0; i < 5 ; i++ ) {
 		result += idArray[idIndex].charAt(getRandomized(charactersLength));
 	}
 
